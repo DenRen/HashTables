@@ -7,12 +7,13 @@
 #include "HashFuncs.h"
 #include "opt_func.h"
 
-const int LIST_SIZE = 100;     //Размер списка
+const int LIST_SIZE = 32;     //Размер списка
 const int NUM_SIZE = 3;         //Макс количество разрядов в числе операций со списком
 const int SERVICE = 118;        //Служебная константа (для построения графов)
-const int HT_SIZE = 256 * 2;
+const int HT_SIZE = 256 * 4 * 32;
 const int BUF_EXTRA_SIZE = 1;
-const char *FILEPATH = "../inputs/input_10000.txt";
+const char *FILEPATH = "../inputs/input_100000.txt";
+const char *UNKWPATH = "../inputs/input.txt";
 
 char *buf_to_free = nullptr;
 size_t words_num = 0;
@@ -47,7 +48,7 @@ int main () {
 
     FILE *readfile = fopen (FILEPATH, "rb");
 	if (!readfile) {
-		printf ("Error opening file\n");
+		printf ("Error opening file 1\n");
 		return 0;
 	}
     /*
@@ -71,17 +72,57 @@ int main () {
     PrintData (&ht, writefile, "JSHash");
     fclose (writefile);
     */
+    //free (buf_to_free);
+    //----------------------------------
+    words_num = 0;
+    HT_t ht2 = HTInit (HT_SIZE, GNU_HASH);
+
+    readfile = fopen (UNKWPATH, "rb");
+    if (!readfile) {
+        printf ("Error opening file 2\n");
+        return 0;
+    }
+    /*
+    ReadData (&ht, readfile, JSHash);
+    ReadData (&ht, readfile, RSHash);
+    ReadData (&ht, readfile, BesouIdentity);
+    ReadData (&ht, readfile, Sum);
+    ReadData (&ht, readfile, Len);
+    ReadData (&ht, readfile, FirstLetter);
+    ReadData (&ht, readfile, MURMUR);
+    ReadData (&ht, readfile, EQ1);
+    ReadData (&ht, readfile, RolHash);
+    ReadData (&ht, readfile, HashLy);
+    */
+    ReadData (&ht2, readfile);
+    fclose (readfile);
+    printf ("Words number: %zu\n", words_num);
+    /*
+    FILE *writefile = fopen ("../output.csv", "w");
+    PrintStart (writefile);
+    PrintData (&ht, writefile, "JSHash");
+    fclose (writefile);
+    */
+
 
     size_t counter = 0;
+    size_t cnt_words = 0;
+    for (size_t i = 1; i < HT_SIZE; i++) {
 
-    for (size_t i = 0; i < HT_SIZE; i++)
-        for (size_t j = 0; j < ht.sizes[i]; j++)
-            if (HTSearch(&ht, ht.lists[i].items[j].data) >= 0)
+        cnt_words += ht2.sizes[i];
+        printf("%zu\n", cnt_words);
+        //for (size_t j = ht2.lists[i].head; j != 0; j = ht2.lists[i].items[j].next) {
+        for (size_t j = ht2.lists[i].head; j != ht2.lists[i].size; j++) {
+            //printf ("%s\n",  ht2.lists[i].items[j].data);
+            if (HTSearch(&ht, ht2.lists[i].items[j].data) >= 0)
                 counter++;
+        }
+    }
 
 	printf ("%zu\n", counter);
 	printf ("\n%zu - %zu = %zu == HT_SIZE", words_num, counter, words_num - counter);
     HTDestruct (&ht);
+    HTDestruct (&ht2);
     return 0;
 }
 
@@ -150,8 +191,6 @@ void ListOK (List_t *list) {
     //Дамп списка
     //ListDump (list);
 }
-
-
 
 size_t ListIdxSearch (List_t *list, size_t idx_s) {
     size_t idx = list->head;
@@ -469,18 +508,14 @@ long getSizeFile(FILE *file) {
 }
 
 void ReadData (HT_t *ht, FILE *readfile) {
+    // Only for words with a length equal to 15
+    char *temp_buf = GetWordsNum (readfile, getSizeFile (readfile));
+    __int16_t *buf = aligned_16_AVX (temp_buf, words_num);
+    for (size_t id = 0; id < words_num; id++) {
 
-    char *buf = GetWordsNum (readfile, getSizeFile (readfile));
-    buf_to_free = buf;
-    for (size_t idx = 0; idx < words_num; idx++) {
-        HTInsert (ht, buf);
-        while (*buf != '\0')
-            buf++;
-        if (idx == words_num - 1)
-            break;
-        buf++;
-        while (isspace (*buf))
-            buf++;
+        //printf ("%s\n", (char *) &buf[id]);
+        HTInsert(ht, (char *) &buf[id]);
+
     }
 }
 
@@ -500,8 +535,8 @@ void PrintData (HT_t *ht, FILE *writefile, char *name) {
 }
 
 char *GetWordsNum (FILE *user_input, long size) {
-    char *buf = (char *) calloc (size + BUF_EXTRA_SIZE, sizeof (char)); //Буфер из файла ввода пользователя
-    fread (buf, sizeof(char), size, user_input); //Загрузка ввода пользователя в буфер
+    char *buf = (char *) calloc (size + BUF_EXTRA_SIZE, sizeof (char));     //Буфер из файла ввода пользователя
+    fread (buf, sizeof(char), size, user_input);                            //Загрузка ввода пользователя в буфер
 
     size_t i = 0; //Индекс в буфере
 
@@ -509,7 +544,7 @@ char *GetWordsNum (FILE *user_input, long size) {
     while (isspace (buf[i])) ++i;
 
     //Обработка ввода пользователя
-    for ( ; ( (i < size) && (buf[i] != EOF) ); ++i) {
+    for ( ; ( i < size && buf[i] != EOF ); ++i) {
         //Новая строка в программе
         if (buf[i] == '\n' || isspace (buf[i]))
             ++words_num, buf[i] = '\0';
@@ -527,6 +562,7 @@ char *GetWordsNum (FILE *user_input, long size) {
             ++words_num;
         }
     }
+
     return buf;
 }
 

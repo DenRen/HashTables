@@ -12,12 +12,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51d09304-da23-45c6-8671-1932ba187327" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HashFuncs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HashFuncs.h" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.h" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
@@ -72,7 +70,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589477500293</updated>
-      <workItem from="1589477501376" duration="6051000" />
+      <workItem from="1589477501376" duration="8747000" />
+      <workItem from="1589486330997" duration="9273000" />
     </task>
     <servers />
   </component>
@@ -84,10 +83,23 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/opt_func.cpp</url>
+          <line>68</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

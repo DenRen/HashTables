@@ -4,6 +4,8 @@
 
 #include <cctype>
 #include <cstring>
+#include <cstdio>
+#include <stdexcept>
 #include "HashFuncs.h"
 
 unsigned long int EQ1 (char *str) {
@@ -185,3 +187,55 @@ void CRC32_tablefill () {
         crc_table_opt1[i] = crc;
     };
 }*/
+//------------------------------------------------------------------------
+
+char *_readfile (const char *path, long *size) {
+    if (path == nullptr)
+        return nullptr;
+
+    FILE *file = nullptr;
+    if ((file = fopen(path, "rb")) == nullptr)
+        return nullptr;
+
+    *size = _getSizeFile (file);
+    // Checking on empty pointer not needed here,
+    // because previous does it
+
+    char *buf = nullptr;
+    if ((buf = (char *) calloc(*size, sizeof(char))) == nullptr)
+        throw std::runtime_error("Failed to create buffer");
+
+    if (fread(buf, sizeof(char), *size, file) != *size)
+        throw std::runtime_error("Failed to read in buffer");
+
+    fclose(file);
+
+    return buf;
+}
+
+void _writefile(char *path, char *data, long size) {
+    FILE *file = fopen(path, "wb");
+    if (data == nullptr || size <= 0 || file == nullptr) {
+        fclose(file);
+        throw std::runtime_error("Empty args in function");
+    }
+
+    if (fwrite(data, sizeof(char), size, file) != size) {
+        fclose(file);
+        throw std::runtime_error("Failed to write data in file");
+    }
+
+    fclose(file);
+}
+
+long _getSizeFile(FILE *file) {
+    if (file == nullptr)
+        return -1;
+
+    long size = 0;
+    fseek(file, 0, SEEK_END);
+    size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    return size;
+}

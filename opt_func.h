@@ -28,8 +28,9 @@ struct List_t {
 };
 
 typedef struct {
-    List_t *lists = nullptr;
-    size_t *sizes = nullptr;
+    List_t  *lists = nullptr;
+    size_t  *sizes = nullptr;
+    __int16_t *buf = nullptr;
     __uint64_t (*HashFunc) (char *str) = nullptr;
 } HT_t;
 
@@ -38,4 +39,6 @@ int64_t HTSearch (HT_t *ht, Elem_t str);
 int64_t ListValSearch (List_t *list, Elem_t val);    //????? ???????? ?? ????????
 
 int64_t ListValSearch_AVX (List_t *list, Elem_t val);
+
+__int16_t *aligned_16_AVX (char *buf, __int64_t size);
 #endif //INC_6_HASHTABLE_OPT_FUNC_H

@@ -31,4 +31,11 @@ unsigned long int RolHash (char *str);
 unsigned long int CRC32 (char *str);
 
 unsigned long int CRC32_opt1 (char *str);
+
+//--------------------------------------------------------------------
+char *_readfile (const char *path, long *size);
+
+void _writefile (char *path, char *data, long size);
+
+long _getSizeFile (FILE *file);
 #endif //INC_6_HASHTABLE_HASHFUNCS_H
