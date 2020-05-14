@@ -4,36 +4,14 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include "opt_func.h"
 
-const int LIST_SIZE = 1000; //Размер списка
-const int NUM_SIZE = 3;   //Макс количество разрядов в числе операций со списком
-const int SERVICE = 118;  //Служебная константа (для построения графов)
-const int HT_SIZE = 201;
+const int LIST_SIZE = 100;     //Размер списка
+const int NUM_SIZE = 3;         //Макс количество разрядов в числе операций со списком
+const int SERVICE = 118;        //Служебная константа (для построения графов)
+const int HT_SIZE = 256 * 2 * 4;
 const int BUF_EXTRA_SIZE = 1;
-const char *FILEPATH = "inputs/input.txt";
-
-//Тип содержимого списка
-typedef char * Elem_t;
-
-//Структура элемента списка
-typedef struct {
-    Elem_t data = nullptr;
-    size_t prev = 0, next = 0;
-} List_it;
-
-//Структура cамого списка
-struct List_t {
-    List_it *items = nullptr;
-    size_t size = 0;
-    size_t head = 0, tail = 0;
-    size_t free = 1;
-    size_t dump_count = 1;
-};
-
-typedef struct {
-    List_t *lists = nullptr;
-    size_t *sizes = nullptr;
-} HT_t;
+const char *FILEPATH = "../inputs/input_100000.txt";
 
 char *buf_to_free = nullptr;
 size_t words_num = 0;
@@ -42,7 +20,6 @@ size_t words_num = 0;
 List_t ListInit (size_t size);                                      //Конструктор
 void ListDestruct (List_t *list);                                   //Деструктор
 void ListOK (List_t *list);                                         //Верификатор
-size_t ListValSearch (List_t *list, Elem_t val);                    //Поиск элемента по значению
 size_t ListIdxSearch (List_t *list, size_t idx);                    //Поиск элемента по логическому номеру
 void ListPushFront (List_t *list, Elem_t val);                      //Вставить элемент в начало списка
 void ListPushBack (List_t *list, Elem_t val);                       //Вставить элемент в конец списка
@@ -58,7 +35,7 @@ void ListSort (List_t *list);                                       //Перес
 HT_t HTInit (size_t size);
 void HTDestruct (HT_t *ht);
 void HTInsert (HT_t *ht, unsigned long int (*HF) (char *str), char *str);
-bool HTSearch (HT_t *ht, char *str);
+
 /*
 unsigned long int EQ1 (char *str);
 unsigned long int MURMUR (char *str);
@@ -113,14 +90,15 @@ int main () {
     fclose (writefile);
     */
 
-   size_t counter = 0;
-    for (size_t i = 0; i < HT_SIZE; ++i)
-    	for (size_t j = 0; j < ht.sizes[i]; ++j)
-			if (HTSearch (&ht, ht.lists[i].items[j].data))
-				++counter;
+    size_t counter = 0;
 
+    for (size_t i = 0; i < HT_SIZE; i++)
+        for (size_t j = 0; j < ht.sizes[i]; j++)
+            if (HTSearch(&ht, ht.lists[i].items[j].data))
+                counter++;
 
 	printf ("%zu\n", counter);
+	printf ("\n%zu - %zu = %zu == HT_SIZE", words_num, counter, words_num - counter);
     HTDestruct (&ht);
     return 0;
 }
@@ -191,46 +169,7 @@ void ListOK (List_t *list) {
     //ListDump (list);
 }
 
-size_t ListValSearch (List_t *list, Elem_t val) {
-    //Поиск по всем элементам списка
-    for (size_t idx = list->head; idx != 0; idx = list->items[idx].next) {
-        //if (list->items[idx].data == val)
 
-        char *temp = list->items[idx].data;
-        char res = 0;
-        /*asm(
-            "	.intel_syntax_noprefix\n\t"
-            "	mov rsi, [v]\n\t"
-            "	mov rdi, [t]\n\t"
-            "	mov al, 0h\n\t"
-            ".for:\n\t"
-            "	cmp byte ptr rsi, rdi\n\t"
-            "	jne case_ne\n\t"
-            "	cmp byte ptr rsi, al\n\t"
-            "	je case_e\n\t"
-            "	jmp .for\n\t"
-            ".case_ne:\n\t"
-            "	mov r, 0h\n\t"
-            "	jmp .end\n\t"
-            ".case_e:\n\t"
-            "	mov r, 1h\n\t\n\t"
-            "	.att_syntax_prefix\n\t"
-            ".end\n\t"
-            "	ret\n\t"
-
-            :"+v" (val), "+t" (temp)
-            :"r" (res)
-            :"%rsi", "%rdi"
-        );*/
-        /*
-        if (strcmp (val, list->items[idx].data) == 0)
-            return idx;
-        */
-        if (res == 1)
-            return idx;
-    }
-    return 0;
-}
 
 size_t ListIdxSearch (List_t *list, size_t idx_s) {
     size_t idx = list->head;
@@ -602,25 +541,6 @@ void HTInsert (HT_t *ht, unsigned long int (*HF) (char *str), char *str) {
         *list = ListInit (LIST_SIZE);
     ListPushBack (list, str);
     ++ht->sizes[code];
-}
-
-bool HTSearch (HT_t *ht, char *str) {
-
-
-
-
-
-
-    size_t temp = 0, i = 0;
-    while (temp == 0 && i < HT_SIZE) {
-        temp = ListValSearch (&ht->lists[i], str);
-        ++i;
-    }
-    return temp != 0;
-
-
-
-
 }
 
 unsigned long int EQ1 (char *str) {
