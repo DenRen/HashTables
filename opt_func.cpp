@@ -6,15 +6,24 @@
 #include <cstdio>
 #include "opt_func.h"
 
-bool HTSearch (HT_t *ht, Elem_t str) {
+int64_t HTSearch (HT_t *ht, Elem_t str) {
 
-    size_t temp = 0;
-    for (int i = 0; i < HT_SIZE; i++)
+    int64_t id = -1;
+
+    __int64_t code = ht->HashFunc (str) % HT_SIZE;
+    if ((id = ListValSearch (&ht->lists[code], str)) >= 0)
+        return id;
+
+    int i = -1;
+    while (++i < code)
         if (ListValSearch (&ht->lists[i], str) >= 0)
-            return true;
+            return id;
+    // i == code
+    while (++i < HT_SIZE)
+        if (ListValSearch (&ht->lists[i], str) >= 0)
+            return id;
 
-    return false;
-
+    return -1;
 }
 
 int64_t ListValSearch (List_t *list, Elem_t val) {
@@ -25,6 +34,16 @@ int64_t ListValSearch (List_t *list, Elem_t val) {
 
     return -1;
 }
+
+int64_t ListValSearch_AVX (List_t *list, Elem_t val) {
+
+    for (size_t idx = list->head; idx != 0; idx = list->items[idx].next)
+        if (!strcmp (list->items[idx].data, val))
+            return idx;
+
+    return -1;
+}
+
 
 /*
         //if (list->items[idx].data == val)

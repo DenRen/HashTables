@@ -12,15 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51d09304-da23-45c6-8671-1932ba187327" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HashTable.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/HashTable.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/a.out" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable.cbp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt_func.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/opt_func.h" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,19 +36,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/HashTables.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
-        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectId" id="1buMPT87scTOTJ1ecFsg4S9LpQE" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.CMake" />
@@ -82,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589477500293</updated>
-      <workItem from="1589477501376" duration="3403000" />
+      <workItem from="1589477501376" duration="6051000" />
     </task>
     <servers />
   </component>

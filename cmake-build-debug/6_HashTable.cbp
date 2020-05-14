@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/tester/Documents/GitHub/HashTables/HashFuncs.cpp">
+			<Option target="6_HashTable"/>
+		</Unit>
+		<Unit filename="/home/tester/Documents/GitHub/HashTables/HashFuncs.h">
+			<Option target="6_HashTable"/>
+		</Unit>
 		<Unit filename="/home/tester/Documents/GitHub/HashTables/main.cpp">
 			<Option target="6_HashTable"/>
 		</Unit>
