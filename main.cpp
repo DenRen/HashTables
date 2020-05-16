@@ -4,13 +4,14 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <immintrin.h>
 #include "HashFuncs.h"
 #include "opt_func.h"
 
-const int LIST_SIZE = 32;     //Размер списка
+const int LIST_SIZE = 128;      //Размер списка
 const int NUM_SIZE = 3;         //Макс количество разрядов в числе операций со списком
 const int SERVICE = 118;        //Служебная константа (для построения графов)
-const int HT_SIZE = 256 * 4 * 32;
+const int HT_SIZE = 256 * 16 * 16;
 const int BUF_EXTRA_SIZE = 1;
 const char *FILEPATH = "../inputs/input_100000.txt";
 const char *UNKWPATH = "../inputs/input.txt";
@@ -43,8 +44,12 @@ char *GetWordsNum (FILE *user_input, long size);
 void PrintStart (FILE *writefile);
 void PrintData (HT_t *ht, FILE *writefile, char *name);
 
+unsigned long int crc_table[256] = {0};
+
 int main () {
-    HT_t ht = HTInit (HT_SIZE, GNU_HASH);
+    getCRC32Table ();
+
+    HT_t ht = HTInit (HT_SIZE, CRC32_SSE);
 
     FILE *readfile = fopen (FILEPATH, "rb");
 	if (!readfile) {
@@ -75,7 +80,7 @@ int main () {
     //free (buf_to_free);
     //----------------------------------
     words_num = 0;
-    HT_t ht2 = HTInit (HT_SIZE, GNU_HASH);
+    HT_t ht2 = HTInit (HT_SIZE, CRC32_SSE);
 
     readfile = fopen (UNKWPATH, "rb");
     if (!readfile) {
@@ -106,21 +111,17 @@ int main () {
 
 
     size_t counter = 0;
-    size_t cnt_words = 0;
-    for (size_t i = 1; i < HT_SIZE; i++) {
+    int mnoj = 256;
 
-        cnt_words += ht2.sizes[i];
-        printf("%zu\n", cnt_words);
-        //for (size_t j = ht2.lists[i].head; j != 0; j = ht2.lists[i].items[j].next) {
-        for (size_t j = ht2.lists[i].head; j != ht2.lists[i].size; j++) {
-            //printf ("%s\n",  ht2.lists[i].items[j].data);
-            if (HTSearch(&ht, ht2.lists[i].items[j].data) >= 0)
-                counter++;
-        }
-    }
+    for (int w = 0; w < mnoj; w++)
+        for (size_t i = 1; i < HT_SIZE; i++)
+            for (size_t j = ht2.lists[i].head; j != ht2.lists[i].size; j++)
+                if (HTSearch (&ht, ht2.lists[i].items[j].data) >= 0)
+                    counter++;
 
-	printf ("%zu\n", counter);
-	printf ("\n%zu - %zu = %zu == HT_SIZE", words_num, counter, words_num - counter);
+    counter /= mnoj;
+
+	printf ("\nCounter: %zu\n", counter);
     HTDestruct (&ht);
     HTDestruct (&ht2);
     return 0;
@@ -476,7 +477,7 @@ void ListSort (List_t *list) {
     ListOK(list);
 }
 
-HT_t HTInit (size_t size, __uint64_t (*HashFunc) (char *str)) {
+HT_t HTInit (size_t size, unsigned long int (*HashFunc) (char *str)) {
     HT_t ht = {};
 
     ht.lists = (List_t *) calloc (size, sizeof (List_t));
@@ -510,13 +511,14 @@ long getSizeFile(FILE *file) {
 void ReadData (HT_t *ht, FILE *readfile) {
     // Only for words with a length equal to 15
     char *temp_buf = GetWordsNum (readfile, getSizeFile (readfile));
-    __int16_t *buf = aligned_16_AVX (temp_buf, words_num);
-    for (size_t id = 0; id < words_num; id++) {
 
-        //printf ("%s\n", (char *) &buf[id]);
+    __m128i *buf = aligned_16_AVX (temp_buf, words_num);
+
+    free (temp_buf);
+    ht->buf = buf;
+
+    for (size_t id = 0; id < words_num; id++)
         HTInsert(ht, (char *) &buf[id]);
-
-    }
 }
 
 void PrintStart (FILE *writefile) {
@@ -538,13 +540,14 @@ char *GetWordsNum (FILE *user_input, long size) {
     char *buf = (char *) calloc (size + BUF_EXTRA_SIZE, sizeof (char));     //Буфер из файла ввода пользователя
     fread (buf, sizeof(char), size, user_input);                            //Загрузка ввода пользователя в буфер
 
-    size_t i = 0; //Индекс в буфере
+    size_t i = 0;   //Индекс в буфере
+    words_num = 0;  //Счётчик слов
 
     //Пропуск пробелов до первой команды
     while (isspace (buf[i])) ++i;
 
     //Обработка ввода пользователя
-    for ( ; ( i < size && buf[i] != EOF ); ++i) {
+    for ( ; ( (i < size) && (buf[i] != EOF) ); ++i) {
         //Новая строка в программе
         if (buf[i] == '\n' || isspace (buf[i]))
             ++words_num, buf[i] = '\0';

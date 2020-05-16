@@ -5,17 +5,22 @@
       <config projectName="6_HashTable" targetName="6_HashTable" />
     </generated>
   </component>
-  <component name="CMakeSettings">
+  <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51d09304-da23-45c6-8671-1932ba187327" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HashFuncs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HashFuncs.h" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/input_10000.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input_10000.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inputs/input_100000.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input_100000.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.h" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
@@ -29,6 +34,20 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,7 +57,9 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HashTables Typical" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.CMake" />
   </component>
   <component name="RunDashboard">
@@ -71,7 +92,15 @@
       <option name="presentableId" value="Default" />
       <updated>1589477500293</updated>
       <workItem from="1589477501376" duration="8747000" />
-      <workItem from="1589486330997" duration="9273000" />
+      <workItem from="1589486330997" duration="9958000" />
+      <workItem from="1589533927388" duration="5962000" />
+      <workItem from="1589558157285" duration="1068000" />
+      <workItem from="1589559343942" duration="70000" />
+      <workItem from="1589560978187" duration="7892000" />
+      <workItem from="1589570549982" duration="21309000" />
+      <workItem from="1589635933250" duration="5678000" />
+      <workItem from="1589644413750" duration="631000" />
+      <workItem from="1589646273324" duration="2109000" />
     </task>
     <servers />
   </component>
@@ -90,16 +119,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/opt_func.cpp</url>
-          <line>68</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

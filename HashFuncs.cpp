@@ -6,6 +6,7 @@
 #include <cstring>
 #include <cstdio>
 #include <stdexcept>
+#include <x86intrin.h>
 #include "HashFuncs.h"
 
 unsigned long int EQ1 (char *str) {
@@ -187,6 +188,56 @@ void CRC32_tablefill () {
         crc_table_opt1[i] = crc;
     };
 }*/
+
+extern unsigned long int crc_table[256];
+
+unsigned long int CRC32_SSE (char *word) {
+    // Only for 15 bytes word
+
+    //int len = strlen (word);
+    //int len = (char *) memchr (word, '\0', 16) - word;
+    __int64_t right = 0;    //, left = 0;
+
+    //if (len <= 8) {
+        //right = *((__int64_t *) word);
+        return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);
+    /*} else {
+        right = *((__int64_t *)(word + (len - 8)));
+        left  = *((__int64_t *) word) >> (16 - len);
+        return _mm_crc32_u64 (0x4C11DB7, left) + _mm_crc32_u64 (0x4C11DB7, right);
+    }*/
+
+
+}
+
+unsigned long int CRC32 (char *buf) {
+    int len = strlen (buf);
+
+    unsigned int crc = 0xFFFFFFFFUL;
+    while (len--)
+        crc = crc_table[(crc ^ *buf++) & 0xFF] ^ (crc >> 8);
+
+    return crc ^ 0xFFFFFFFFUL;
+}
+
+unsigned long *getCRC32Table () {
+
+    unsigned long crc = 0;
+
+    for (int i = 0; i < 256; i++) {
+        crc = i;
+
+        for (int j = 0; j < 8; j++)
+            crc = crc & 1 ? (crc >> 1) ^ 0xEDB88320UL : crc >> 1;
+
+        crc_table[i] = crc;
+    }
+
+}
+
+unsigned long int crc32::CRC32 (char *buf) {
+
+}
 //------------------------------------------------------------------------
 
 char *_readfile (const char *path, long *size) {

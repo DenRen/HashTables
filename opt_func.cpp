@@ -5,28 +5,16 @@
 #include <cstring>
 #include <immintrin.h>
 #include <cstdio>
+#include <cctype>
+#include <cassert>
+#include <x86intrin.h>
 #include "opt_func.h"
 
 int64_t HTSearch (HT_t *ht, Elem_t str) {
 
-    int64_t id = -1;
-
     __int64_t code = ht->HashFunc (str) % HT_SIZE;
-    if ((id = ListValSearch (&ht->lists[code], str)) >= 0) {
-        //printf ("true\n");
-        return id;
-    }
-    //printf ("false\n");
-    int i = -1;
-    while (++i < code)
-        if (ListValSearch (&ht->lists[i], str) >= 0)
-            return id;
-    // i == code
-    while (++i < HT_SIZE)
-        if (ListValSearch (&ht->lists[i], str) >= 0)
-            return id;
 
-    return -1;
+    return ListValSearch_AVX (&ht->lists[code], str, ht->lists[code].size);
 }
 
 int64_t ListValSearch (List_t *list, Elem_t val) {
@@ -38,64 +26,118 @@ int64_t ListValSearch (List_t *list, Elem_t val) {
     return -1;
 }
 
-int64_t ListValSearch_AVX (List_t *list, Elem_t val) {
+inline __m128i word2m128i (char *word) {
+    assert (strlen (word) < 16);
 
-    for (size_t idx = list->head; idx != 0; idx = list->items[idx].next)
-        if (!strcmp (list->items[idx].data, val))
+    __m128i _new_word = _mm_set1_epi64x (0);
+    memcpy (&_new_word, word, strlen (word));
+
+    return _new_word;
+}
+
+inline __m256i dword2m256i (char *first, char *second) {
+    assert (strlen (first) < 16);
+    //assert (strlen (second) < 16);
+
+    __m256i _new_word = _mm256_set1_epi64x (0);
+    if (first != nullptr)
+        memcpy (&_new_word, first, strlen (first));
+    if (second != nullptr)
+        memcpy ((__m128i *) &_new_word + 1, second, strlen (second));
+
+    return _new_word;
+}
+
+int64_t ListValSearch_AVX (List_t *list, Elem_t val, size_t size) {
+
+    __m256i arr_val = dword2m256i (val, val);
+
+    for (size_t idx = 1; idx < size - size % 2; idx += 2) {
+
+        __m256i res = _mm256_cmpeq_epi64 (dword2m256i (list->items[idx + 0].data,
+                                                       list->items[idx + 1].data),
+
+                                          arr_val);
+
+        if (*((char *) &res) != 0 && *((char *) &res + 8) != 0)
             return idx;
 
-    return -1;
+        else if (*((char *) &res + 16) != 0 && *((char *) &res + 24) != 0)
+            return idx + 1;
+
+    }
+
+    if (size % 2)
+        return !strcmp (list->items[size].data, val) ? size : -1;
+    else
+        return -1;
+
 }
 
 inline char *next_word (char *buf, __int8_t *length) {
-    // ????????? ??????? ?????
-    while (((*buf >= 'a' && *buf <= 'z') || (*buf >= 'A' && *buf <= 'Z')))
+
+    while (!isspace (*buf) && *buf != '\0')
         buf++;
-    // ???? ?????? ????????? ?????
-    while (!((*buf >= 'a' && *buf <= 'z') || (*buf >= 'A' && *buf <= 'Z')))
+
+    while (isspace (*buf) || *buf == '\0')
         buf++;
-    printf ("%s\n", buf);
+
     __int8_t _lenght = 1;
-    while (((buf[_lenght] >= 'a' && buf[_lenght] <= 'z') ||
-            (buf[_lenght] >= 'A' && buf[_lenght] <= 'Z')))
+    while (!isspace (buf[_lenght]) && buf[_lenght] != '\0')
         _lenght++;
 
     *length = _lenght;
     return buf;
-
 }
 
-__int16_t *aligned_16_AVX (char *buf, __int64_t quant_words) {
+__m128i *aligned_16_AVX (char *buf, __int64_t quant_words) {
+    quant_words--;
+
     // Create empty aligned array
-    auto *new_buf = (__m256i *) (aligned_alloc (32, quant_words * 16));
-    for (__int64_t i = 0; i < quant_words / 16 + 1; i++)
+    auto *new_buf = (__m256i *) aligned_alloc (32, quant_words * 16);
+
+    for (__int64_t i = 0; i < quant_words / 2; i++)
         new_buf[i] = _mm256_set1_epi64x (0);
+
+    if (quant_words % 2 != 0)
+        *((__m128i *) &new_buf[quant_words / 2 - 1]) = _mm_set1_epi64x (0);
 
     __int8_t lenght = 0;
     char *word = buf;
 
     __int64_t i = 0;
-    for (; i < quant_words / 16; i++) {
+    for (; i < quant_words / 2; i++) {
 
-        auto *cur_part_buf = (__int16_t *) (&new_buf[i]);
+        __m128i *cur_part_buf = (__m128i *) &new_buf[i];
 
-        for (int j = 0; j < 16; j++) {
+        for (int j = 0; j < 2; j++) {
 
-            word = next_word(word, &lenght);
-            memcpy (&cur_part_buf[j], word, lenght); // ...hello00000000000...
+            word = next_word (word, &lenght);
+
+            memcpy (&cur_part_buf[j], word, lenght);                // ...hello00000000000...
+
+            /*for (int i1 = 0; i1 < 16; i1++) {
+                printf ("%c", ((char *) &cur_part_buf[j])[i1]);
+                //fflush (stdout);
+            }
+            printf (" %s\t", (char *) &cur_part_buf[j]);
+            for (int i1 = 0; i1 < 128 * 8 * 0; i1++) {
+                printf ("%c", ((char *) new_buf)[i1]);
+                //fflush (stdout);
+            }
+            printf ("\n");*/
         }
     }
 
-    auto *cur_part_buf = (__int16_t *) (&new_buf[i]);
+    auto *cur_part_buf = (__int8_t *) (&new_buf[i]);
+    i *= 2;
     for (int j = 0; i < quant_words; i++, j++) {
 
-        word = next_word(word, &lenght);
+        word = next_word (word, &lenght);
         memcpy (&cur_part_buf[j], word, lenght);
     }
 
-    free (buf);
-
-    return (__int16_t *) new_buf;
+    return (__m128i *) new_buf;
 }
 
 /*

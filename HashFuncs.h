@@ -30,7 +30,19 @@ unsigned long int RolHash (char *str);
 
 unsigned long int CRC32 (char *str);
 
+unsigned long int CRC32_SSE (char *word);
+
 unsigned long int CRC32_opt1 (char *str);
+
+unsigned long *getCRC32Table ();
+
+struct crc32 {
+
+    unsigned long *crc_table;
+
+    crc32 ();
+    unsigned long int CRC32 (char *buf);
+};
 
 //--------------------------------------------------------------------
 char *_readfile (const char *path, long *size);
