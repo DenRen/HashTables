@@ -191,27 +191,25 @@ void CRC32_tablefill () {
 
 extern unsigned long int crc_table[256];
 
-unsigned long int CRC32_SSE (char *word) {
+unsigned long int CRC32_SSE (char *word, int len) {
     // Only for 15 bytes word
+    /*
+    __int64_t left = 0, right = 0;
 
-    //int len = strlen (word);
-    //int len = (char *) memchr (word, '\0', 16) - word;
-    __int64_t right = 0;    //, left = 0;
-
-    //if (len <= 8) {
-        //right = *((__int64_t *) word);
-        return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);
-    /*} else {
+    if (len <= 8) {                                                                         // TODO NEED ASM OPT
+        right = *((__int64_t *) word) >> (8 - len);
+        return _mm_crc32_u64 (0x4C11DB7, right);
+    } else {
         right = *((__int64_t *)(word + (len - 8)));
         left  = *((__int64_t *) word) >> (16 - len);
         return _mm_crc32_u64 (0x4C11DB7, left) + _mm_crc32_u64 (0x4C11DB7, right);
-    }*/
-
+    }
+*/
+    return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);
 
 }
 
-unsigned long int CRC32 (char *buf) {
-    int len = strlen (buf);
+unsigned long int CRC32 (char *buf, int len) {
 
     unsigned int crc = 0xFFFFFFFFUL;
     while (len--)

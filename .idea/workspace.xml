@@ -12,15 +12,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51d09304-da23-45c6-8671-1932ba187327" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HashFuncs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HashFuncs.h" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/input_10000.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input_10000.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inputs/input_100000.txt" beforeDir="false" afterPath="$PROJECT_DIR$/inputs/input_100000.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/opt_func.h" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
@@ -100,7 +95,7 @@
       <workItem from="1589570549982" duration="21309000" />
       <workItem from="1589635933250" duration="5678000" />
       <workItem from="1589644413750" duration="631000" />
-      <workItem from="1589646273324" duration="2109000" />
+      <workItem from="1589646273324" duration="9115000" />
     </task>
     <servers />
   </component>

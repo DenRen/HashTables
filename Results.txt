@@ -1,0 +1,35 @@
+AVX_CRC_O0                                  17.804
+AVX_CRC_O3                                  14.532
+AVX_CRCsse_O0                               15.759
+AVX_CRCsse_O3                               13.092
+
+AVX_CRCsse_align_input_O3                   11.308      // Cheaters
+AVX_CRCsse_ecostrlen_align_input_O0         13.184      // Cheaters
+AVX_CRCsse_ecostrlen_align_input_O3         10.706      // Cheaters
+
+AVX_CRCsse_ecostrlen_O0                     13.643
+AVX_CRCsse_ecostrlen_O3                     11.858
+
+AVX_CRCsse_mchr_O3                          13.468
+
+AVX_GNU_O0                                  16.182
+AVX_GNU_O3                                  13.192
+
+//-----------------------------------------------------------------
+
+TYP_CRC_O0                                  16.774
+TYP_CRC_O3                                  13.397
+
+TYP_GNU_O0                                  14.230
+TYP_GNU_O3                                  11.455
+
+
+
+
+
+
+
+
+
+
+

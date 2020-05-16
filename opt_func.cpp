@@ -12,9 +12,10 @@
 
 int64_t HTSearch (HT_t *ht, Elem_t str) {
 
-    __int64_t code = ht->HashFunc (str) % HT_SIZE;
+    int length = strlen (str);
+    __int64_t code = ht->HashFunc (str, length) % HT_SIZE;
 
-    return ListValSearch_AVX (&ht->lists[code], str, ht->lists[code].size);
+    return ListValSearch_AVX (&ht->lists[code], ht->lists[code].size, str, length);
 }
 
 int64_t ListValSearch (List_t *list, Elem_t val) {
@@ -35,28 +36,29 @@ inline __m128i word2m128i (char *word) {
     return _new_word;
 }
 
-inline __m256i dword2m256i (char *first, char *second) {
-    assert (strlen (first) < 16);
+inline __m256i dword2m256i (char *first, char *second, int length = 16) {
+
+    //assert (strlen (first) < 16);
     //assert (strlen (second) < 16);
 
     __m256i _new_word = _mm256_set1_epi64x (0);
-    if (first != nullptr)
-        memcpy (&_new_word, first, strlen (first));
+
+    if (first != nullptr)                                               // TODO NEED ASM OPT
+        memcpy (&_new_word, first, length);
     if (second != nullptr)
-        memcpy ((__m128i *) &_new_word + 1, second, strlen (second));
+        memcpy ((__m128i *) &_new_word + 1, second, length);
 
     return _new_word;
 }
 
-int64_t ListValSearch_AVX (List_t *list, Elem_t val, size_t size) {
+int64_t ListValSearch_AVX (List_t *list, size_t size, Elem_t val, int length) {
 
-    __m256i arr_val = dword2m256i (val, val);
+    __m256i arr_val = dword2m256i (val, val, length);
 
     for (size_t idx = 1; idx < size - size % 2; idx += 2) {
 
         __m256i res = _mm256_cmpeq_epi64 (dword2m256i (list->items[idx + 0].data,
                                                        list->items[idx + 1].data),
-
                                           arr_val);
 
         if (*((char *) &res) != 0 && *((char *) &res + 8) != 0)
@@ -64,7 +66,6 @@ int64_t ListValSearch_AVX (List_t *list, Elem_t val, size_t size) {
 
         else if (*((char *) &res + 16) != 0 && *((char *) &res + 24) != 0)
             return idx + 1;
-
     }
 
     if (size % 2)

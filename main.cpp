@@ -35,7 +35,7 @@ void ListDump (List_t *list);                                       //Дамп �
 void ListSort (List_t *list);                                       //Пересчет индексов элементов
 
 //Операции с таблицей
-HT_t HTInit (size_t size, __uint64_t (*HashFunc) (char *str));
+HT_t HTInit (size_t size, __uint64_t (*HashFunc) (char *str, int len));
 void HTDestruct (HT_t *ht);
 void HTInsert (HT_t *ht, char *str);
 
@@ -114,10 +114,13 @@ int main () {
     int mnoj = 256;
 
     for (int w = 0; w < mnoj; w++)
-        for (size_t i = 1; i < HT_SIZE; i++)
-            for (size_t j = ht2.lists[i].head; j != ht2.lists[i].size; j++)
-                if (HTSearch (&ht, ht2.lists[i].items[j].data) >= 0)
+        for (size_t i = 1; i < HT_SIZE; i++) {
+            size_t size = ht2.lists[i].size;
+            auto lists = ht2.lists[i];
+            for (size_t j = lists.head; j != 0; j = lists.items[j].next)
+                if (HTSearch (&ht, lists.items[j].data) >= 0)
                     counter++;
+        }
 
     counter /= mnoj;
 
@@ -477,7 +480,7 @@ void ListSort (List_t *list) {
     ListOK(list);
 }
 
-HT_t HTInit (size_t size, unsigned long int (*HashFunc) (char *str)) {
+HT_t HTInit (size_t size, unsigned long int (*HashFunc) (char *str, int len)) {
     HT_t ht = {};
 
     ht.lists = (List_t *) calloc (size, sizeof (List_t));
@@ -570,7 +573,7 @@ char *GetWordsNum (FILE *user_input, long size) {
 }
 
 void HTInsert (HT_t *ht, char *str) {
-    unsigned long int code = ht->HashFunc (str);
+    unsigned long int code = ht->HashFunc (str, strlen (str));
     code %= HT_SIZE;
     List_t *list = &(ht->lists[code]);
     if (list->items == nullptr)

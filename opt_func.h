@@ -28,14 +28,14 @@ typedef struct {
     List_t  *lists = nullptr;
     size_t  *sizes = nullptr;
     __m128i *buf = nullptr;
-    __uint64_t (*HashFunc) (char *str) = nullptr;
+    __uint64_t (*HashFunc) (char *str, int len) = nullptr;
 } HT_t;
 
 int64_t HTSearch (HT_t *ht, Elem_t str);
 
 int64_t ListValSearch (List_t *list, Elem_t val);
 
-int64_t ListValSearch_AVX (List_t *list, Elem_t val, size_t size);
+int64_t ListValSearch_AVX (List_t *list, size_t size, Elem_t val, int length);
 
 __m128i *aligned_16_AVX (char *buf, __int64_t size);
 

@@ -28,9 +28,9 @@ unsigned long int rol (unsigned long int v, unsigned long shift);
 
 unsigned long int RolHash (char *str);
 
-unsigned long int CRC32 (char *str);
+unsigned long int CRC32 (char *str, int len);
 
-unsigned long int CRC32_SSE (char *word);
+unsigned long int CRC32_SSE (char *word, int len);
 
 unsigned long int CRC32_opt1 (char *str);
 
