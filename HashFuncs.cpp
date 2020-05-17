@@ -192,21 +192,32 @@ void CRC32_tablefill () {
 extern unsigned long int crc_table[256];
 
 unsigned long int CRC32_SSE (char *word, int len) {
-    // Only for 15 bytes word
-    /*
+    // Only for 15 bytes word and word[15] = '\0'
+
     __int64_t left = 0, right = 0;
 
-    if (len <= 8) {                                                                         // TODO NEED ASM OPT
-        right = *((__int64_t *) word) >> (8 - len);
-        return _mm_crc32_u64 (0x4C11DB7, right);
-    } else {
-        right = *((__int64_t *)(word + (len - 8)));
-        left  = *((__int64_t *) word) >> (16 - len);
+    if (len >= 15) {
+        right = *((__int64_t *)(word + 8));
+        left  = *(__int64_t *) word;
         return _mm_crc32_u64 (0x4C11DB7, left) + _mm_crc32_u64 (0x4C11DB7, right);
+    } else if (len > 8) {
+        memcpy (&right, word + 8, strlen (word + 8));
+        left  = (*(__int64_t *) word);
+        return _mm_crc32_u64 (0x4C11DB7, left) + _mm_crc32_u64 (0x4C11DB7, right);
+    } else {                                                                         // TODO NEED ASM OPT
+        memcpy (&left, word, len);
+        return _mm_crc32_u64 (0x4C11DB7, left) + _mm_crc32_u64 (0x4C11DB7, 0);
     }
-*/
-    return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);
 
+
+    //return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);    // Cheat
+
+}
+
+unsigned long int ALIGN_CRC32_SSE (char *word, int len) {
+    // Only for 15 bytes word and word[15] = '\0'
+
+    return _mm_crc32_u64 (0x4C11DB7, *(__int64_t *) word);    // Cheat
 }
 
 unsigned long int CRC32 (char *buf, int len) {

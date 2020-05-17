@@ -33,6 +33,8 @@ typedef struct {
 
 int64_t HTSearch (HT_t *ht, Elem_t str);
 
+int64_t HT_HTSearch (HT_t *ht, Elem_t str);         // Search from HT in HT
+
 int64_t ListValSearch (List_t *list, Elem_t val);
 
 int64_t ListValSearch_AVX (List_t *list, size_t size, Elem_t val, int length);
@@ -40,4 +42,5 @@ int64_t ListValSearch_AVX (List_t *list, size_t size, Elem_t val, int length);
 __m128i *aligned_16_AVX (char *buf, __int64_t size);
 
 inline char *next_word (char *buf, __int8_t *length);
+
 #endif //INC_6_HASHTABLE_OPT_FUNC_H

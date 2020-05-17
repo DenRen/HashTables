@@ -10,6 +10,24 @@
 #include <x86intrin.h>
 #include "opt_func.h"
 
+int64_t HT_HTSearch (HT_t *ht, Elem_t str) {
+
+    __int64_t code = ht->HashFunc (str, 15) % HT_SIZE;
+
+    /*if (ht->HashFunc (str, strlen (str)) != ht->HashFunc (str, 15)) {
+
+
+        printf ("%s\nlen: %zu\n", str, strlen (str));
+        for (int i = 0; i < 32; i++)
+            printf ("%c", str[i]);
+        printf ("\n");
+        ht->HashFunc (str, strlen (str));
+        ht->HashFunc (str, 15);
+    }*/
+
+    return ListValSearch_AVX (&ht->lists[code], ht->lists[code].size, str, 15);
+}
+
 int64_t HTSearch (HT_t *ht, Elem_t str) {
 
     int length = strlen (str);
@@ -36,7 +54,7 @@ inline __m128i word2m128i (char *word) {
     return _new_word;
 }
 
-inline __m256i dword2m256i (char *first, char *second, int length = 16) {
+inline __m256i dword2m256i (char *first, char *second, int length = 15) {
 
     //assert (strlen (first) < 16);
     //assert (strlen (second) < 16);

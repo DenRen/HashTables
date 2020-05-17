@@ -32,6 +32,8 @@ unsigned long int CRC32 (char *str, int len);
 
 unsigned long int CRC32_SSE (char *word, int len);
 
+unsigned long int ALIGN_CRC32_SSE (char *word, int len);
+
 unsigned long int CRC32_opt1 (char *str);
 
 unsigned long *getCRC32Table ();

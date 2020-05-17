@@ -3,6 +3,9 @@ AVX_CRC_O3                                  14.532
 AVX_CRCsse_O0                               15.759
 AVX_CRCsse_O3                               13.092
 
+AVX_CRCsse_ecostrlen_align_input_HTHT_O0    12.160      // Top -O0
+AVX_CRCsse_ecostrlen_align_input_HTHT_O3    9.652       // Top -O3
+
 AVX_CRCsse_align_input_O3                   11.308      // Cheaters
 AVX_CRCsse_ecostrlen_align_input_O0         13.184      // Cheaters
 AVX_CRCsse_ecostrlen_align_input_O3         10.706      // Cheaters

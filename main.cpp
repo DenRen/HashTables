@@ -37,7 +37,7 @@ void ListSort (List_t *list);                                       //Перес
 //Операции с таблицей
 HT_t HTInit (size_t size, __uint64_t (*HashFunc) (char *str, int len));
 void HTDestruct (HT_t *ht);
-void HTInsert (HT_t *ht, char *str);
+void HTInsert (HT_t *ht, char *str, int len = 15);
 
 void ReadData (HT_t *ht, FILE *readfile);
 char *GetWordsNum (FILE *user_input, long size);
@@ -49,7 +49,7 @@ unsigned long int crc_table[256] = {0};
 int main () {
     getCRC32Table ();
 
-    HT_t ht = HTInit (HT_SIZE, CRC32_SSE);
+    HT_t ht = HTInit (HT_SIZE, ALIGN_CRC32_SSE);
 
     FILE *readfile = fopen (FILEPATH, "rb");
 	if (!readfile) {
@@ -80,7 +80,7 @@ int main () {
     //free (buf_to_free);
     //----------------------------------
     words_num = 0;
-    HT_t ht2 = HTInit (HT_SIZE, CRC32_SSE);
+    HT_t ht2 = HTInit (HT_SIZE, ALIGN_CRC32_SSE);
 
     readfile = fopen (UNKWPATH, "rb");
     if (!readfile) {
@@ -115,10 +115,10 @@ int main () {
 
     for (int w = 0; w < mnoj; w++)
         for (size_t i = 1; i < HT_SIZE; i++) {
-            size_t size = ht2.lists[i].size;
+            //size_t size = ht2.lists[i].size;
             auto lists = ht2.lists[i];
             for (size_t j = lists.head; j != 0; j = lists.items[j].next)
-                if (HTSearch (&ht, lists.items[j].data) >= 0)
+                if (HT_HTSearch (&ht, lists.items[j].data) >= 0)
                     counter++;
         }
 
@@ -521,7 +521,7 @@ void ReadData (HT_t *ht, FILE *readfile) {
     ht->buf = buf;
 
     for (size_t id = 0; id < words_num; id++)
-        HTInsert(ht, (char *) &buf[id]);
+        HTInsert(ht, (char *) &buf[id], strlen ((char *) &buf[id]));
 }
 
 void PrintStart (FILE *writefile) {
@@ -572,8 +572,8 @@ char *GetWordsNum (FILE *user_input, long size) {
     return buf;
 }
 
-void HTInsert (HT_t *ht, char *str) {
-    unsigned long int code = ht->HashFunc (str, strlen (str));
+void HTInsert (HT_t *ht, char *str, int len) {
+    unsigned long int code = ht->HashFunc (str, len);
     code %= HT_SIZE;
     List_t *list = &(ht->lists[code]);
     if (list->items == nullptr)
