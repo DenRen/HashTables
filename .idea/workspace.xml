@@ -14,13 +14,7 @@
     <list default="true" id="51d09304-da23-45c6-8671-1932ba187327" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HashFuncs.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HashFuncs.h" beforeDir="false" afterPath="$PROJECT_DIR$/HashFuncs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Results.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/6_HashTable" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/opt_func.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/opt_func.h" beforeDir="false" afterPath="$PROJECT_DIR$/opt_func.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -98,7 +92,8 @@
       <workItem from="1589635933250" duration="5678000" />
       <workItem from="1589644413750" duration="631000" />
       <workItem from="1589646273324" duration="10048000" />
-      <workItem from="1589704645823" duration="9252000" />
+      <workItem from="1589704645823" duration="12362000" />
+      <workItem from="1589797441191" duration="13000" />
     </task>
     <servers />
   </component>
