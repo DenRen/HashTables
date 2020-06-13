@@ -109,7 +109,6 @@ int main () {
     fclose (writefile);
     */
 
-
     size_t counter = 0;
     int mnoj = 256;
 

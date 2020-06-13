@@ -79,6 +79,8 @@ int64_t ListValSearch_AVX (List_t *list, size_t size, Elem_t val, int length) {
                                                        list->items[idx + 1].data),
                                           arr_val);
 
+        // TODO __int32_t comp = _mm256_movemask_ps (res); GITHUB
+
         if (*((char *) &res) != 0 && *((char *) &res + 8) != 0)
             return idx;
 

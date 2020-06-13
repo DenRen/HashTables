@@ -1,10 +1,11 @@
-AVX_CRC_O0                                  17.804
+AVX_CRC_O0                                  17.804      //  106 % (????????? ?? 6 %)
 AVX_CRC_O3                                  14.532
+
 AVX_CRCsse_O0                               15.759
 AVX_CRCsse_O3                               13.092
 
-AVX_CRCsse_ecostrlen_align_input_HTHT_O0    12.160      // Top -O0
-AVX_CRCsse_ecostrlen_align_input_HTHT_O3    9.652       // Top -O3
+AVX_CRCsse_ecostrlen_align_input_HTHT_O0    12.160      // Top -O0 (??????? ?? 38 %)
+AVX_CRCsse_ecostrlen_align_input_HTHT_O3    9.652       // Top -O3 (??????? ?? 39 %)
 
 AVX_CRCsse_align_input_O3                   11.308      // Cheaters
 AVX_CRCsse_ecostrlen_align_input_O0         13.184      // Cheaters
@@ -20,19 +21,8 @@ AVX_GNU_O3                                  13.192
 
 //-----------------------------------------------------------------
 
-TYP_CRC_O0                                  16.774
-TYP_CRC_O3                                  13.397
+TYP_CRC_O0                                  16.774      // 100 %
+TYP_CRC_O3                                  13.397      //  75 % (??????? ?? 25 %)
 
-TYP_GNU_O0                                  14.230
-TYP_GNU_O3                                  11.455
-
-
-
-
-
-
-
-
-
-
-
+TYP_GNU_O0                                  14.230      // 100 %
+TYP_GNU_O3                                  11.455      //  76 % (??????? ?? 24 %)
